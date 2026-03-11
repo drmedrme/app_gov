@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Preview Accounts{% endblock %}
+{% block content %}
+<h1>Preview — {{ a.get('company_name','') }}</h1>
+
+<div class="card">
+    <h2>Balance Sheet Summary</h2>
+    <table>
+        <tr><th></th><th class="amount">Current</th><th class="amount">Prior</th></tr>
+        <tr><td>Fixed Assets</td><td class="amount">{{ "{:,}".format(a.get('fixed_assets',0)) }}</td><td class="amount">{{ "{:,}".format(a.get('prior_fixed_assets',0)) }}</td></tr>
+        <tr><td>Current Assets</td><td class="amount">{{ a.get('current_assets',0) }}</td><td class="amount">{{ a.get('prior_current_assets',0) }}</td></tr>
+        <tr><td>Total assets less current liabilities</td><td class="amount">{{ "{:,}".format(a.get('total_assets_less_current_liabilities',0)) }}</td><td class="amount">{{ "{:,}".format(a.get('prior_total_assets_less_current_liabilities',0)) }}</td></tr>
+        <tr><td>Creditors (after 1 year)</td><td class="amount">({{ "{:,}".format(a.get('creditors_after_one_year',0)) }})</td><td class="amount">({{ "{:,}".format(a.get('prior_creditors_after_one_year',0)) }})</td></tr>
+        <tr><td>Provisions</td><td class="amount">{{ a.get('provisions',0) }}</td><td class="amount">{{ a.get('prior_provisions',0) }}</td></tr>
+        <tr><td>Accruals &amp; deferred income</td><td class="amount">{{ a.get('accruals_deferred_income',0) }}</td><td class="amount">{{ a.get('prior_accruals_deferred_income',0) }}</td></tr>
+        <tr class="grand-total"><td><b>Net assets</b></td><td class="amount"><b>{{ "{:,}".format(a.get('net_assets',0)) }}</b></td><td class="amount"><b>{{ "{:,}".format(a.get('prior_net_assets',0)) }}</b></td></tr>
+        <tr class="grand-total"><td><b>Capital and reserves</b></td><td class="amount"><b>{{ "{:,}".format(a.get('capital_and_reserves',0)) }}</b></td><td class="amount"><b>{{ "{:,}".format(a.get('prior_capital_and_reserves',0)) }}</b></td></tr>
+    </table>
+    {% if a.get('net_assets') == a.get('capital_and_reserves') %}
+    <p style="color: green; font-weight: bold;">Balance sheet balances.</p>
+    {% else %}
+    <p style="color: red; font-weight: bold;">WARNING: Balance sheet does NOT balance!</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>iXBRL Document</h2>
+    <p><a href="/ixbrl" target="_blank" class="btn">View iXBRL Document</a></p>
+    <p><a href="/envelope" target="_blank" class="btn btn-secondary">View GovTalk Envelope (XML)</a></p>
+</div>
+
+<div class="card">
+    <h2>File to Companies House</h2>
+    <p style="margin-bottom: 10px;">This will submit the accounts to the Companies House XML Gateway.</p>
+    <form method="POST" action="/file">
+        <button type="submit" class="btn-danger" onclick="return confirm('Submit these accounts to Companies House?')">Submit Filing</button>
+    </form>
+</div>
+
+<p><a href="/">&larr; Back to form</a></p>
+{% endblock %}

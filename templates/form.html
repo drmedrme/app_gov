@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Accounts Input{% endblock %}
+{% block content %}
+<h1>Micro-Entity Accounts Filing</h1>
+<p style="color:#666; font-size:0.9em;">CORSICA STREET 567 LIMITED — 10303807</p>
+
+<form method="POST" action="/submit">
+    <div class="card">
+        <h2>Company Details</h2>
+        <div class="row">
+            <div>
+                <label for="company_name">Company name</label>
+                <input type="text" id="company_name" name="company_name" value="{{ a.company_name if a.company_name is defined else a.get('company_name','') }}" required>
+            </div>
+            <div>
+                <label for="company_number">Company number</label>
+                <input type="text" id="company_number" name="company_number" maxlength="8" value="{{ a.get('company_number','') }}" required>
+            </div>
+        </div>
+        <label for="company_auth_code">Company authentication code</label>
+        <input type="text" id="company_auth_code" name="company_auth_code" maxlength="6" value="{{ a.get('company_auth_code','') }}">
+        <p class="help">6-character code from Companies House (needed for live filing only)</p>
+    </div>
+
+    <div class="card">
+        <h2>Accounting Period</h2>
+        <div class="row">
+            <div>
+                <label for="period_start">Period start</label>
+                <input type="date" id="period_start" name="period_start" value="{{ a.get('period_start','') }}" required>
+            </div>
+            <div>
+                <label for="period_end">Period end (made up to)</label>
+                <input type="date" id="period_end" name="period_end" value="{{ a.get('period_end','') }}" required>
+            </div>
+            <div>
+                <label for="prior_period_end">Prior year end</label>
+                <input type="date" id="prior_period_end" name="prior_period_end" value="{{ a.get('prior_period_end','') }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Balance Sheet</h2>
+        <table class="input-table">
+            <tr>
+                <th></th>
+                <th>Current Year (&pound;)</th>
+                <th>Prior Year (&pound;)</th>
+            </tr>
+            <tr>
+                <td><label>Fixed Assets</label></td>
+                <td><input type="number" name="fixed_assets" value="{{ a.get('fixed_assets',0) }}"></td>
+                <td><input type="number" name="prior_fixed_assets" value="{{ a.get('prior_fixed_assets',0) }}"></td>
+            </tr>
+            <tr>
+                <td><label>Current Assets</label></td>
+                <td><input type="number" name="current_assets" value="{{ a.get('current_assets',0) }}"></td>
+                <td><input type="number" name="prior_current_assets" value="{{ a.get('prior_current_assets',0) }}"></td>
+            </tr>
+            <tr><td colspan="3"><hr></td></tr>
+            <tr>
+                <td><label>Creditors: due after 1 year</label></td>
+                <td><input type="number" name="creditors_after_one_year" value="{{ a.get('creditors_after_one_year',0) }}"></td>
+                <td><input type="number" name="prior_creditors_after_one_year" value="{{ a.get('prior_creditors_after_one_year',0) }}"></td>
+            </tr>
+            <tr>
+                <td><label>Provisions for liabilities</label></td>
+                <td><input type="number" name="provisions" value="{{ a.get('provisions',0) }}"></td>
+                <td><input type="number" name="prior_provisions" value="{{ a.get('prior_provisions',0) }}"></td>
+            </tr>
+            <tr>
+                <td><label>Accruals and deferred income</label></td>
+                <td><input type="number" name="accruals_deferred_income" value="{{ a.get('accruals_deferred_income',0) }}"></td>
+                <td><input type="number" name="prior_accruals_deferred_income" value="{{ a.get('prior_accruals_deferred_income',0) }}"></td>
+            </tr>
+            <tr><td colspan="3"><hr></td></tr>
+            <tr>
+                <td><label>Capital and reserves</label></td>
+                <td><input type="number" name="capital_and_reserves" value="{{ a.get('capital_and_reserves',0) }}"></td>
+                <td><input type="number" name="prior_capital_and_reserves" value="{{ a.get('prior_capital_and_reserves',0) }}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Notes</h2>
+        <div class="row">
+            <div>
+                <label>Avg employees (current year)</label>
+                <input type="number" name="avg_employees" value="{{ a.get('avg_employees',0) }}">
+            </div>
+            <div>
+                <label>Avg employees (prior year)</label>
+                <input type="number" name="prior_avg_employees" value="{{ a.get('prior_avg_employees',0) }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Approval</h2>
+        <div class="row">
+            <div>
+                <label for="director_name">Director name</label>
+                <input type="text" id="director_name" name="director_name" value="{{ a.get('director_name','') }}" required>
+            </div>
+            <div>
+                <label for="approval_date">Board approval date</label>
+                <input type="date" id="approval_date" name="approval_date" value="{{ a.get('approval_date','') }}">
+            </div>
+        </div>
+    </div>
+
+    <button type="submit">Validate &amp; Preview</button>
+</form>
+{% endblock %}

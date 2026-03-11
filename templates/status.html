@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Filing Status{% endblock %}
+{% block content %}
+<h1>Filing Status</h1>
+
+{% if submission %}
+<div class="card">
+    <h2>Last Submission</h2>
+    <table>
+        <tr><td><b>Submitted</b></td><td>{{ submission.get('timestamp','') }}</td></tr>
+        <tr><td><b>Transaction ID</b></td><td>{{ submission.get('transaction_id','') }}</td></tr>
+        <tr><td><b>Qualifier</b></td><td>{{ submission.get('qualifier','') }}</td></tr>
+        <tr><td><b>Correlation ID</b></td><td>{{ submission.get('correlation_id','') }}</td></tr>
+    </table>
+
+    {% if submission.get('errors') %}
+    <h2>Errors</h2>
+    {% for err in submission.get('errors', []) %}
+    <div class="flash error">{{ err.get('type','') }}: {{ err.get('text','') }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <form method="POST" action="/poll" style="margin-top: 10px;">
+        <button type="submit">Poll for Status</button>
+    </form>
+
+    {% if submission.get('poll_result') %}
+    <h2>Poll Result</h2>
+    <table>
+        <tr><td><b>Polled</b></td><td>{{ submission.poll_result.get('timestamp','') }}</td></tr>
+        <tr><td><b>Qualifier</b></td><td>{{ submission.poll_result.get('qualifier','') }}</td></tr>
+        <tr><td><b>Status Code</b></td><td>{{ submission.poll_result.get('status_code','') }}</td></tr>
+    </table>
+    {% if submission.poll_result.get('rejections') %}
+    <h2>Rejections</h2>
+    {% for rej in submission.poll_result.get('rejections', []) %}
+    <div class="flash error">{{ rej.get('code','') }}: {{ rej.get('description','') }}</div>
+    {% endfor %}
+    {% endif %}
+    {% if submission.poll_result.get('errors') %}
+    {% for err in submission.poll_result.get('errors', []) %}
+    <div class="flash error">{{ err.get('type','') }}: {{ err.get('text','') }}</div>
+    {% endfor %}
+    {% endif %}
+    <details>
+        <summary>Raw poll response</summary>
+        <pre>{{ submission.poll_result.get('raw_response','') }}</pre>
+    </details>
+    {% endif %}
+
+    <details style="margin-top: 15px;">
+        <summary>Raw gateway response</summary>
+        <pre>{{ submission.get('raw_response','') }}</pre>
+    </details>
+</div>
+{% else %}
+<div class="card">
+    <p>No filings yet. <a href="/">Enter accounts</a> and submit.</p>
+</div>
+{% endif %}
+
+<p><a href="/">&larr; Back to form</a></p>
+{% endblock %}

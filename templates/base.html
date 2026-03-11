@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CH Filing{% endblock %}</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; line-height: 1.5; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { font-size: 1.4em; margin-bottom: 20px; color: #1a1a1a; }
+        h2 { font-size: 1.1em; margin: 20px 0 10px; padding-bottom: 5px; border-bottom: 2px solid #003078; color: #003078; }
+        nav { background: #003078; padding: 10px 20px; }
+        nav a { color: #fff; text-decoration: none; margin-right: 20px; font-size: 0.9em; }
+        nav a:hover { text-decoration: underline; }
+        .card { background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 20px; margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 0.9em; }
+        input[type="text"], input[type="number"], input[type="date"] {
+            width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 3px;
+            font-size: 0.95em; margin-bottom: 12px;
+        }
+        input:focus { border-color: #003078; outline: none; box-shadow: 0 0 0 2px rgba(0,48,120,0.2); }
+        .row { display: flex; gap: 15px; }
+        .row > div { flex: 1; }
+        .row-3 > div { flex: 1; }
+        button, .btn { background: #003078; color: #fff; border: none; padding: 10px 20px;
+            border-radius: 3px; cursor: pointer; font-size: 0.95em; text-decoration: none; display: inline-block; }
+        button:hover, .btn:hover { background: #001f4f; }
+        .btn-danger { background: #d32f2f; }
+        .btn-danger:hover { background: #b71c1c; }
+        .btn-secondary { background: #666; }
+        .flash { padding: 10px 15px; margin-bottom: 15px; border-radius: 3px; font-size: 0.9em; }
+        .flash.error { background: #fce4ec; color: #c62828; border: 1px solid #ef9a9a; }
+        .flash.success { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+        .amount { text-align: right; font-family: monospace; }
+        table { width: 100%; border-collapse: collapse; }
+        td, th { padding: 6px 10px; text-align: left; }
+        .total td { border-top: 1px solid #333; font-weight: bold; }
+        .grand-total td { border-top: 2px solid #333; font-weight: bold; }
+        pre { background: #f0f0f0; padding: 10px; overflow-x: auto; font-size: 0.8em; border-radius: 3px; }
+        .help { font-size: 0.8em; color: #666; margin-top: -8px; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Input</a>
+        <a href="/preview">Preview</a>
+        <a href="/status">Status</a>
+    </nav>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
