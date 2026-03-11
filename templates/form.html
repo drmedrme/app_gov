@@ -113,4 +113,67 @@
 
     <button type="submit">Validate &amp; Preview</button>
 </form>
+
+<div class="card" style="margin-top: 20px;">
+    <h2>Pre-Flight Checks</h2>
+    <p style="margin-bottom: 10px; font-size: 0.9em; color: #666;">
+        Run this before filing to confirm the app can reach Companies House and your credentials are set.
+    </p>
+    <button type="button" id="test-gw-btn" class="btn-secondary" onclick="testGateway()">Test Gateway Connection</button>
+    <div id="test-results" style="display:none; margin-top: 15px;"></div>
+</div>
+
+<script>
+function testGateway() {
+    var btn = document.getElementById('test-gw-btn');
+    var results = document.getElementById('test-results');
+    btn.disabled = true;
+    btn.textContent = 'Testing...';
+    results.style.display = 'block';
+    results.innerHTML = '<p>Connecting to Companies House gateway...</p>';
+
+    fetch('/test-gateway', { method: 'POST' })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            var html = '<table style="font-size:0.9em;">';
+            // Gateway URL
+            html += '<tr><td><b>Gateway URL</b></td><td>' + d.gateway_url + '</td></tr>';
+            // Environment
+            var envColor = d.environment === 'LIVE' ? '#d32f2f' : '#2e7d32';
+            html += '<tr><td><b>Environment</b></td><td style="color:' + envColor + '; font-weight:bold;">' + d.environment + '</td></tr>';
+            // Credentials
+            html += '<tr><td><b>Presenter ID set</b></td><td>' + (d.presenter_id_set ? 'Yes' : '<span style="color:#d32f2f;">NO — set CH_PRESENTER_ID env var</span>') + '</td></tr>';
+            html += '<tr><td><b>Presenter auth set</b></td><td>' + (d.presenter_auth_set ? 'Yes' : '<span style="color:#d32f2f;">NO — set CH_PRESENTER_AUTH env var</span>') + '</td></tr>';
+            // Gateway reachable
+            if (d.gateway_error) {
+                html += '<tr><td><b>Gateway reachable</b></td><td style="color:#d32f2f;">NO — ' + d.gateway_error + '</td></tr>';
+            } else {
+                html += '<tr><td><b>Gateway reachable</b></td><td style="color:#2e7d32;">Yes (HTTP ' + d.gateway_status_code + ')</td></tr>';
+                if (d.gateway_responding) {
+                    html += '<tr><td><b>Gateway responding</b></td><td style="color:#2e7d32;">Yes — server returned a valid response</td></tr>';
+                }
+            }
+            html += '</table>';
+
+            // Overall verdict
+            var allGood = d.gateway_reachable && d.presenter_id_set && d.presenter_auth_set;
+            if (allGood) {
+                html += '<p style="color:#2e7d32; font-weight:bold; margin-top:10px;">All checks passed. Ready to file.</p>';
+            } else if (d.gateway_reachable && (!d.presenter_id_set || !d.presenter_auth_set)) {
+                html += '<p style="color:#e65100; font-weight:bold; margin-top:10px;">Gateway is reachable, but presenter credentials are missing. You can preview/inspect but cannot submit until credentials are set.</p>';
+            } else {
+                html += '<p style="color:#d32f2f; font-weight:bold; margin-top:10px;">Some checks failed. See above.</p>';
+            }
+
+            results.innerHTML = html;
+            btn.disabled = false;
+            btn.textContent = 'Test Gateway Connection';
+        })
+        .catch(function(err) {
+            results.innerHTML = '<p style="color:#d32f2f;">Error running test: ' + err + '</p>';
+            btn.disabled = false;
+            btn.textContent = 'Test Gateway Connection';
+        });
+}
+</script>
 {% endblock %}

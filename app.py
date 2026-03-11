@@ -6,8 +6,9 @@ Single-company filing pipeline for CORSICA STREET 567 LIMITED (10303807).
 
 import os
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, flash, Response
+from flask import Flask, render_template, request, redirect, url_for, flash, Response, jsonify
 
+import requests as http_requests
 from ixbrl import generate_ixbrl
 from govtalk import build_submission_envelope, build_status_envelope, build_ack_envelope
 from gateway import submit as gw_submit, poll_status as gw_poll, acknowledge as gw_ack, GATEWAY_URL
@@ -59,6 +60,46 @@ current_filing = dict(DEFAULTS)
 @app.route("/")
 def index():
     return render_template("form.html", a=current_filing)
+
+
+@app.route("/test-gateway", methods=["POST"])
+def test_gateway():
+    """Test connectivity to the Companies House XML Gateway."""
+    checks = {
+        "gateway_url": GW_URL,
+        "environment": "TEST" if IS_TEST else "LIVE",
+        "presenter_id_set": bool(PRESENTER_ID),
+        "presenter_auth_set": bool(PRESENTER_AUTH),
+        "gateway_reachable": False,
+        "gateway_status_code": None,
+        "gateway_error": None,
+    }
+
+    try:
+        # Send a minimal POST to the gateway — it will reject it, but that proves connectivity
+        resp = http_requests.post(
+            GW_URL,
+            data=b"<ping/>",
+            headers={"Content-Type": "text/xml"},
+            timeout=10,
+        )
+        checks["gateway_reachable"] = True
+        checks["gateway_status_code"] = resp.status_code
+        # Any response (even an error XML) means we reached the server
+        if "GovTalkMessage" in resp.text or resp.status_code in (200, 400, 405, 500):
+            checks["gateway_responding"] = True
+            checks["gateway_response_snippet"] = resp.text[:300]
+        else:
+            checks["gateway_responding"] = False
+            checks["gateway_response_snippet"] = resp.text[:300]
+    except http_requests.ConnectionError:
+        checks["gateway_error"] = "Cannot connect. Check your internet connection."
+    except http_requests.Timeout:
+        checks["gateway_error"] = "Connection timed out after 10 seconds."
+    except http_requests.RequestException as e:
+        checks["gateway_error"] = str(e)
+
+    return jsonify(checks)
 
 
 @app.route("/submit", methods=["POST"])
