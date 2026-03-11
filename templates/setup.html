@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Setup Guide — Presenter ID{% endblock %}
+{% block content %}
+<h1>Setup Guide: Getting Your Presenter ID</h1>
+
+<div class="card">
+    <h2>Current Status</h2>
+    <table>
+        <tr>
+            <td><b>Presenter ID</b></td>
+            <td>{% if presenter_id_set %}<span style="color:#2e7d32; font-weight:bold;">Set</span>{% else %}<span style="color:#d32f2f; font-weight:bold;">Not set</span> — need <code>CH_PRESENTER_ID</code> env var{% endif %}</td>
+        </tr>
+        <tr>
+            <td><b>Presenter Auth</b></td>
+            <td>{% if presenter_auth_set %}<span style="color:#2e7d32; font-weight:bold;">Set</span>{% else %}<span style="color:#d32f2f; font-weight:bold;">Not set</span> — need <code>CH_PRESENTER_AUTH</code> env var{% endif %}</td>
+        </tr>
+        <tr>
+            <td><b>Environment</b></td>
+            <td>{% if is_test %}<span style="color:#2e7d32;">TEST</span> (submissions won't be filed for real){% else %}<span style="color:#d32f2f; font-weight:bold;">LIVE</span> (submissions will be filed for real!){% endif %}</td>
+        </tr>
+    </table>
+</div>
+
+<div class="card">
+    <h2>What is a Presenter ID?</h2>
+    <p>To file anything to Companies House via software (rather than their website), you need a <b>Presenter Account</b>. This gives you two credentials:</p>
+    <ul style="margin: 10px 0 10px 20px;">
+        <li><b>Presenter ID</b> — your identity as a software filer (11 characters)</li>
+        <li><b>Presenter Authentication Code</b> — your password for the gateway (11 characters, letters and numbers)</li>
+    </ul>
+    <p>These are <b>separate</b> from the company authentication code. The company auth code proves you're authorised to file for that specific company. The presenter credentials prove you're an authorised software filer.</p>
+</div>
+
+<div class="card">
+    <h2>Step 1: Get a Test Account</h2>
+    <p>Before you can file for real, Companies House wants you to test your software. Email them to request a test account:</p>
+    <div style="background:#f0f0f0; padding:15px; border-radius:4px; margin:10px 0;">
+        <p><b>Email:</b> <a href="mailto:xml@companieshouse.gov.uk">xml@companieshouse.gov.uk</a></p>
+        <p><b>Subject:</b> Request for XML Gateway test account</p>
+        <p style="margin-top:10px;"><b>Include:</b></p>
+        <ul style="margin: 5px 0 0 20px;">
+            <li>Your name / organisation name</li>
+            <li>Contact name</li>
+            <li>Address</li>
+            <li>Email address</li>
+            <li>Telephone number</li>
+        </ul>
+    </div>
+    <p style="margin-top:10px;">They will reply with a <b>test Presenter ID</b> and <b>test Authentication Code</b>. Turnaround is typically a few working days.</p>
+    <p style="margin-top:5px; font-size:0.9em; color:#666;">Before emailing, you should have read the <a href="https://www.gov.uk/government/publications/technical-interface-specifications-for-companies-house-software/important-information-for-software-developers-read-first" target="_blank">technical interface specifications</a> (this app already implements them).</p>
+</div>
+
+<div class="card">
+    <h2>Step 2: Test Your Filing</h2>
+    <p>Once you have test credentials:</p>
+    <ol style="margin: 10px 0 10px 20px; line-height: 2;">
+        <li>Start the app with your test credentials:
+            <pre style="margin:5px 0;">export CH_PRESENTER_ID="your_test_id"
+export CH_PRESENTER_AUTH="your_test_auth"
+./start.sh</pre>
+        </li>
+        <li>Fill in the form (it's pre-filled with the right numbers)</li>
+        <li>Click <b>Validate &amp; Preview</b></li>
+        <li>Check the iXBRL document and GovTalk envelope look correct</li>
+        <li>Click <b>Submit Filing</b> — this goes to CH in test mode (<code>GatewayTest=1</code>)</li>
+        <li>Email <a href="mailto:xml@companieshouse.gov.uk">xml@companieshouse.gov.uk</a> to tell them your test submission is ready for manual review</li>
+        <li>Wait for their confirmation that your test submission looks good</li>
+    </ol>
+</div>
+
+<div class="card">
+    <h2>Step 3: Get a Live Presenter Account</h2>
+    <p>Once testing is approved, you need live credentials. Since we're only filing <b>accounts</b> (no fee-bearing documents), you can use the quick online route:</p>
+
+    <div style="background:#e8f5e9; padding:15px; border-radius:4px; margin:10px 0; border:1px solid #a5d6a7;">
+        <p><b>Option A — Online (recommended, near-instant):</b></p>
+        <p style="margin-top:5px;">Apply at: <a href="https://find-and-update.company-information.service.gov.uk/presenter-account" target="_blank">https://find-and-update.company-information.service.gov.uk/presenter-account</a></p>
+        <ul style="margin: 5px 0 0 20px;">
+            <li>Sign in or create a Companies House account</li>
+            <li>Provide your name, correspondence address, business name or company number</li>
+            <li>Tick <b>"software filing"</b> when asked</li>
+            <li>Credentials issued almost immediately</li>
+        </ul>
+        <p style="margin-top:5px; font-size:0.9em;">This is for <b>non-fee-bearing documents only</b> (which accounts are). Perfect for our use case.</p>
+    </div>
+
+    <div style="background:#f0f0f0; padding:15px; border-radius:4px; margin:10px 0;">
+        <p><b>Option B — Credit account (if ever needed for fee-bearing filings):</b></p>
+        <p style="margin-top:5px;">Download the application form from: <a href="https://www.gov.uk/government/publications/apply-for-a-companies-house-credit-account" target="_blank">GOV.UK credit account page</a></p>
+        <ul style="margin: 5px 0 0 20px;">
+            <li>Fill in the PDF form (tick "software filing" in section 8)</li>
+            <li>Email to <a href="mailto:chdfinance@companieshouse.gov.uk">chdfinance@companieshouse.gov.uk</a></li>
+            <li>Takes up to 5 working days</li>
+            <li>Credentials sent by post in separate letters for security</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Step 4: File for Real</h2>
+    <p>Once you have live credentials:</p>
+    <pre style="margin:10px 0;">export CH_PRESENTER_ID="your_live_id"
+export CH_PRESENTER_AUTH="your_live_auth"
+export CH_ENVIRONMENT=live
+./start.sh</pre>
+    <p>Then go through the normal form → preview → submit flow. The filing will be sent to Companies House for real.</p>
+</div>
+
+<div class="card">
+    <h2>Credential Format Reference</h2>
+    <table>
+        <tr><td><b>Presenter ID</b></td><td>11 characters. Starts/ends with <code>000</code> (credit account) or starts with <code>E</code> followed by 10 digits (presenter-only account)</td></tr>
+        <tr><td><b>Presenter Auth Code</b></td><td>11 characters, uppercase letters and numbers. Example: <code>AC75D45JUQA</code></td></tr>
+        <tr><td><b>Company Auth Code</b></td><td>6 characters, alphanumeric. Posted to your registered office annually by Companies House</td></tr>
+    </table>
+</div>
+
+<div class="card">
+    <h2>Key Contacts</h2>
+    <table>
+        <tr><td><b>Test accounts &amp; XML technical queries</b></td><td><a href="mailto:xml@companieshouse.gov.uk">xml@companieshouse.gov.uk</a></td></tr>
+        <tr><td><b>Credit account applications</b></td><td><a href="mailto:chdfinance@companieshouse.gov.uk">chdfinance@companieshouse.gov.uk</a></td></tr>
+        <tr><td><b>General enquiries</b></td><td><a href="https://www.gov.uk/contact-companies-house" target="_blank">GOV.UK contact page</a></td></tr>
+    </table>
+</div>
+
+<div class="card" style="background:#fff3e0; border-color:#ffcc80;">
+    <h2>Note: Future of the XML Gateway</h2>
+    <p>Companies House has said they plan to replace the XML Gateway with a REST/JSON API in the long term. No definite timeline has been given. For now, the XML Gateway is the only way to software-file accounts, and this app uses it.</p>
+</div>
+
+<p style="margin-top:15px;"><a href="/">&larr; Back to form</a></p>
+{% endblock %}

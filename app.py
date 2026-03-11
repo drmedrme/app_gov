@@ -62,6 +62,11 @@ def index():
     return render_template("form.html", a=current_filing)
 
 
+@app.route("/setup")
+def setup():
+    return render_template("setup.html", presenter_id_set=bool(PRESENTER_ID), presenter_auth_set=bool(PRESENTER_AUTH), is_test=IS_TEST)
+
+
 @app.route("/test-gateway", methods=["POST"])
 def test_gateway():
     """Test connectivity to the Companies House XML Gateway."""

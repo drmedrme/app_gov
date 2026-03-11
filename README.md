@@ -51,7 +51,7 @@ export CH_PRESENTER_AUTH="your_presenter_auth_code"
 ./start.sh
 ```
 
-If you haven't registered as a software filer yet, you need to apply at Companies House first. This is a one-time setup.
+If you haven't registered as a software filer yet, see the **Getting a Presenter ID** section below, or visit the **Setup Guide** page in the app (`/setup`).
 
 ### 2. Verify the gateway URL is reachable
 
@@ -152,6 +152,7 @@ If the numbers ever do change, just update them in the form.
 | `/envelope` | Full GovTalk XML envelope (for inspection) |
 | `/file` | Submits to CH gateway |
 | `/status` | Shows submission result, poll button |
+| `/setup` | Setup guide — how to get a Presenter ID |
 
 ---
 
@@ -165,6 +166,61 @@ If the numbers ever do change, just update them in the form.
 | `CH_GATEWAY_URL` | `https://xmlgw.companieshouse.gov.uk/v1-0/xmlgw/Gateway` | Override only if CH changes the URL |
 | `API_PORT` | `4825` | Port the app runs on |
 | `SECRET_KEY` | `dev-key-change-me` | Flask session key |
+
+---
+
+## Getting a Presenter ID (First-Time Setup)
+
+You need a Presenter ID and Authentication Code to submit filings. This is a one-time registration process.
+
+### Step 1: Request a test account
+
+Email **xml@companieshouse.gov.uk** with:
+- Your name / organisation name
+- Contact name
+- Address
+- Email address
+- Phone number
+
+They'll reply within a few working days with test credentials. Before emailing, you should have read the [technical interface specifications](https://www.gov.uk/government/publications/technical-interface-specifications-for-companies-house-software/important-information-for-software-developers-read-first) (this app already implements them).
+
+### Step 2: Test your filing
+
+Use the test credentials to do a test submission (the app defaults to test mode). Then email xml@companieshouse.gov.uk to tell them your test is ready for their review.
+
+### Step 3: Get live credentials
+
+Once testing is approved, apply for a live presenter account:
+
+**For accounts-only filing (our case)** — apply online, near-instant:
+https://find-and-update.company-information.service.gov.uk/presenter-account
+
+- Sign in or create a Companies House account
+- Provide name, address, business name or company number
+- **Tick "software filing"** when asked
+- Credentials issued almost immediately
+
+**For fee-bearing filings (not needed for accounts)** — credit account form:
+https://www.gov.uk/government/publications/apply-for-a-companies-house-credit-account
+Email to chdfinance@companieshouse.gov.uk, takes up to 5 working days.
+
+### Credential format
+
+| Credential | Format |
+|-----------|--------|
+| Presenter ID | 11 chars. Starts/ends with `000` (credit) or starts with `E` + 10 digits (presenter-only) |
+| Presenter Auth | 11 chars, uppercase letters + numbers (e.g. `AC75D45JUQA`) |
+| Company Auth | 6 chars, alphanumeric. Posted to registered office annually |
+
+### Key contacts
+
+| Purpose | Email |
+|---------|-------|
+| Test accounts & XML technical queries | xml@companieshouse.gov.uk |
+| Credit account applications | chdfinance@companieshouse.gov.uk |
+| General enquiries | https://www.gov.uk/contact-companies-house |
+
+The app also has a detailed **Setup Guide** page at `/setup` with all of this information.
 
 ---
 
