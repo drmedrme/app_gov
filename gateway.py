@@ -9,7 +9,7 @@ import requests
 from lxml import etree
 
 GATEWAY_URL = "https://xmlgw.companieshouse.gov.uk/v1-0/xmlgw/Gateway"
-GT_NS = "http://www.govtalk.gov.uk/CM/envelope"
+GT_NS = "http://www.govtalk.gov.uk/schemas/govtalk/govtalkheader"
 STATUS_NS = "http://xmlgw.companieshouse.gov.uk"
 
 

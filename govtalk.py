@@ -15,16 +15,29 @@ import hashlib
 import uuid
 from lxml import etree
 
-GT_NS = "http://www.govtalk.gov.uk/CM/envelope"
+GT_NS = "http://www.govtalk.gov.uk/schemas/govtalk/govtalkheader"
 FS_NS = "http://xmlgw.companieshouse.gov.uk/Header"
-GT_SCHEMA = "http://xmlgw.companieshouse.gov.uk/v2-1/schema/Egov_ch-v2-0.xsd"
+GT_SCHEMA = "http://xmlgw.companieshouse.gov.uk/v1-0/schema/Egov_ch.xsd"
 FS_SCHEMA = "http://xmlgw.companieshouse.gov.uk/v1-1/schema/forms/FormSubmission-v2-11.xsd"
 STATUS_NS = "http://xmlgw.companieshouse.gov.uk"
 
 
 def _md5(value: str) -> str:
-    """MD5 hex digest of a string (CHMD5 authentication)."""
+    """MD5 hex digest of a string."""
     return hashlib.md5(value.encode("utf-8")).hexdigest()
+
+
+def _md5_prefixed(value: str) -> str:
+    """MD5 hash of presenter credentials (no prefix)."""
+    return _md5(value)
+
+
+def resolve_package_reference(package_reference: str, is_test: bool) -> str:
+    """Use the Companies House test package reference when none is configured."""
+    package_reference = (package_reference or "").strip()
+    if package_reference:
+        return package_reference
+    return "0012" if is_test else ""
 
 
 def build_submission_envelope(
@@ -38,6 +51,7 @@ def build_submission_envelope(
     contact_name: str = "",
     contact_email: str = "",
     submission_number: str = "000001",
+    package_reference: str = "",
     is_test: bool = True,
 ) -> tuple[str, str]:
     """Build a GovTalk submission envelope for accounts filing.
@@ -45,7 +59,7 @@ def build_submission_envelope(
     Returns:
         (envelope_xml, transaction_id) tuple.
     """
-    transaction_id = uuid.uuid4().hex[:35]
+    transaction_id = uuid.uuid4().hex[:32].upper()
 
     GT = "{%s}" % GT_NS
     XSI = "{http://www.w3.org/2001/XMLSchema-instance}"
@@ -56,10 +70,8 @@ def build_submission_envelope(
             None: GT_NS,
             "dsig": "http://www.w3.org/2000/09/xmldsig#",
             "gt": "http://www.govtalk.gov.uk/schemas/govtalk/core",
-            "xsi": "http://www.w3.org/2001/XMLSchema-instance",
         },
     )
-    root.set(f"{XSI}schemaLocation", f"{GT_NS} {GT_SCHEMA}")
 
     # EnvelopeVersion
     ev = etree.SubElement(root, f"{GT}EnvelopeVersion")
@@ -79,16 +91,16 @@ def build_submission_envelope(
     gw_test = etree.SubElement(msg, f"{GT}GatewayTest")
     gw_test.text = "1" if is_test else "0"
 
-    # SenderDetails with CHMD5 authentication
+    # Current presenter measures expect md5# values with Method=clear.
     sender = etree.SubElement(header, f"{GT}SenderDetails")
     id_auth = etree.SubElement(sender, f"{GT}IDAuthentication")
     sid = etree.SubElement(id_auth, f"{GT}SenderID")
-    sid.text = _md5(presenter_id)
+    sid.text = _md5_prefixed(presenter_id)
     auth = etree.SubElement(id_auth, f"{GT}Authentication")
     method = etree.SubElement(auth, f"{GT}Method")
-    method.text = "CHMD5"
+    method.text = "clear"
     value = etree.SubElement(auth, f"{GT}Value")
-    value.text = _md5(presenter_auth)
+    value.text = _md5_prefixed(presenter_auth)
     if contact_email:
         email = etree.SubElement(sender, f"{GT}EmailAddress")
         email.text = contact_email
@@ -102,6 +114,7 @@ def build_submission_envelope(
     _build_form_submission(
         body, company_number, company_name, company_auth_code,
         ixbrl_document, made_up_date, contact_name, submission_number,
+        resolve_package_reference(package_reference, is_test),
     )
 
     xml = etree.tostring(root, pretty_print=True, xml_declaration=True, encoding="UTF-8")
@@ -111,6 +124,7 @@ def build_submission_envelope(
 def _build_form_submission(
     parent, company_number, company_name, company_auth_code,
     ixbrl_document, made_up_date, contact_name, submission_number,
+    package_reference="",
 ):
     """Build the FormSubmission element inside the Body."""
     FS = "{%s}" % FS_NS
@@ -119,9 +133,8 @@ def _build_form_submission(
     fs = etree.SubElement(
         parent,
         f"{FS}FormSubmission",
-        nsmap={None: FS_NS, "xsi": "http://www.w3.org/2001/XMLSchema-instance"},
+        nsmap={None: FS_NS},
     )
-    fs.set(f"{XSI}schemaLocation", f"{FS_NS} {FS_SCHEMA}")
 
     # FormHeader
     fh = etree.SubElement(fs, f"{FS}FormHeader")
@@ -134,7 +147,7 @@ def _build_form_submission(
     cac = etree.SubElement(fh, f"{FS}CompanyAuthenticationCode")
     cac.text = company_auth_code
     pkg = etree.SubElement(fh, f"{FS}PackageReference")
-    pkg.text = f"ACCOUNTS-{company_number}"
+    pkg.text = package_reference
     lang = etree.SubElement(fh, f"{FS}Language")
     lang.text = "EN"
     fi = etree.SubElement(fh, f"{FS}FormIdentifier")
@@ -212,6 +225,7 @@ def build_ack_envelope(
 def _make_envelope_root(class_name, presenter_id, presenter_auth, is_test):
     """Build a basic GovTalk envelope (header only, no body)."""
     GT = "{%s}" % GT_NS
+    transaction_id = uuid.uuid4().hex[:32].upper()
 
     root = etree.Element(f"{GT}GovTalkMessage", nsmap={None: GT_NS})
 
@@ -224,18 +238,21 @@ def _make_envelope_root(class_name, presenter_id, presenter_auth, is_test):
     cls.text = class_name
     qual = etree.SubElement(msg, f"{GT}Qualifier")
     qual.text = "request"
+    txn = etree.SubElement(msg, f"{GT}TransactionID")
+    txn.text = transaction_id
     gw_test = etree.SubElement(msg, f"{GT}GatewayTest")
     gw_test.text = "1" if is_test else "0"
 
+    # Current presenter measures expect md5# values with Method=clear.
     sender = etree.SubElement(header, f"{GT}SenderDetails")
     id_auth = etree.SubElement(sender, f"{GT}IDAuthentication")
     sid = etree.SubElement(id_auth, f"{GT}SenderID")
-    sid.text = _md5(presenter_id)
+    sid.text = _md5_prefixed(presenter_id)
     auth_el = etree.SubElement(id_auth, f"{GT}Authentication")
     method = etree.SubElement(auth_el, f"{GT}Method")
-    method.text = "CHMD5"
+    method.text = "clear"
     value = etree.SubElement(auth_el, f"{GT}Value")
-    value.text = _md5(presenter_auth)
+    value.text = _md5_prefixed(presenter_auth)
 
     gt_details = etree.SubElement(root, f"{GT}GovTalkDetails")
     etree.SubElement(gt_details, f"{GT}Keys")
