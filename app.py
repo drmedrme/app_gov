@@ -4,13 +4,19 @@ Single-company filing pipeline for CORSICA STREET 567 LIMITED (10303807).
   input form -> validation -> iXBRL -> GovTalk envelope -> gateway submit -> status
 """
 
+import json
 import os
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, Response, jsonify
 
 import requests as http_requests
 from ixbrl import generate_ixbrl
-from govtalk import build_submission_envelope, build_status_envelope, build_ack_envelope
+from govtalk import (
+    build_submission_envelope,
+    build_status_envelope,
+    build_ack_envelope,
+    resolve_package_reference,
+)
 from gateway import submit as gw_submit, poll_status as gw_poll, acknowledge as gw_ack, GATEWAY_URL
 
 app = Flask(__name__)
@@ -21,15 +27,61 @@ GW_URL = os.environ.get("CH_GATEWAY_URL", GATEWAY_URL)
 PRESENTER_ID = os.environ.get("CH_PRESENTER_ID", "")
 PRESENTER_AUTH = os.environ.get("CH_PRESENTER_AUTH", "")
 IS_TEST = os.environ.get("CH_ENVIRONMENT", "test") != "live"
+PACKAGE_REF = os.environ.get("CH_PACKAGE_REF", "")
+
+# Submission number tracking — must be unique and incremental per CH requirements
+SUBMISSION_NUMBER_FILE = os.path.join(os.path.dirname(__file__), ".submission_number")
+SUBMISSION_LOG_FILE = os.path.join(os.path.dirname(__file__), "submissions.json")
+XML_LOG_DIR = os.path.join(os.path.dirname(__file__), "xml_logs")
+os.makedirs(XML_LOG_DIR, exist_ok=True)
+
+
+def _next_submission_number() -> str:
+    """Read, increment, and persist the submission number."""
+    try:
+        with open(SUBMISSION_NUMBER_FILE) as f:
+            num = int(f.read().strip())
+    except (FileNotFoundError, ValueError):
+        num = 0
+    num += 1
+    with open(SUBMISSION_NUMBER_FILE, "w") as f:
+        f.write(str(num))
+    return str(num).zfill(6)
+
+
+def _load_submissions() -> list[dict]:
+    """Load submission history from disk."""
+    try:
+        with open(SUBMISSION_LOG_FILE) as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
+
+def _save_submission(entry: dict):
+    """Append a submission record to the log."""
+    log = _load_submissions()
+    log.append(entry)
+    with open(SUBMISSION_LOG_FILE, "w") as f:
+        json.dump(log, f, indent=2)
+
+
+def _update_last_submission(update: dict):
+    """Update the most recent submission record with poll results."""
+    log = _load_submissions()
+    if log:
+        log[-1].update(update)
+        with open(SUBMISSION_LOG_FILE, "w") as f:
+            json.dump(log, f, indent=2)
 
 # Default values — numbers don't change year to year
 DEFAULTS = {
     "company_name": "CORSICA STREET 567 LIMITED",
     "company_number": "10303807",
     "company_auth_code": "",
-    "period_start": "2025-08-01",
-    "period_end": "2026-07-31",
-    "prior_period_end": "2025-07-31",
+    "period_start": "2025-01-01",
+    "period_end": "2025-12-31",
+    "prior_period_end": "2024-12-31",
     "fixed_assets": 20199,
     "current_assets": 0,
     "net_current_assets": 0,
@@ -57,6 +109,10 @@ DEFAULTS = {
 current_filing = dict(DEFAULTS)
 
 
+def _effective_package_ref() -> str:
+    return resolve_package_reference(PACKAGE_REF, IS_TEST)
+
+
 @app.route("/")
 def index():
     return render_template("form.html", a=current_filing)
@@ -64,7 +120,20 @@ def index():
 
 @app.route("/setup")
 def setup():
-    return render_template("setup.html", presenter_id_set=bool(PRESENTER_ID), presenter_auth_set=bool(PRESENTER_AUTH), is_test=IS_TEST)
+    try:
+        with open(SUBMISSION_NUMBER_FILE) as f:
+            next_num = int(f.read().strip()) + 1
+    except (FileNotFoundError, ValueError):
+        next_num = 1
+    return render_template(
+        "setup.html",
+        presenter_id_set=bool(PRESENTER_ID),
+        presenter_auth_set=bool(PRESENTER_AUTH),
+        is_test=IS_TEST,
+        package_ref=PACKAGE_REF,
+        effective_package_ref=_effective_package_ref(),
+        next_submission_number=next_num,
+    )
 
 
 @app.route("/test-gateway", methods=["POST"])
@@ -195,6 +264,7 @@ def view_envelope():
         ixbrl_document=ixbrl_html,
         made_up_date=current_filing["period_end"],
         contact_name=current_filing["director_name"],
+        package_reference=_effective_package_ref(),
         is_test=IS_TEST,
     )
     return Response(envelope, mimetype="application/xml")
@@ -213,6 +283,7 @@ def file_accounts():
         return redirect(url_for("preview"))
 
     ixbrl_html = generate_ixbrl(current_filing)
+    sub_num = _next_submission_number()
     envelope, txn_id = build_submission_envelope(
         presenter_id=PRESENTER_ID,
         presenter_auth=PRESENTER_AUTH,
@@ -222,19 +293,37 @@ def file_accounts():
         ixbrl_document=ixbrl_html,
         made_up_date=current_filing["period_end"],
         contact_name=current_filing["director_name"],
+        submission_number=sub_num,
+        package_reference=_effective_package_ref(),
         is_test=IS_TEST,
     )
 
     result = gw_submit(envelope, GW_URL)
 
-    current_filing["last_submission"] = {
+    # Save full XML request and response to files
+    xml_prefix = os.path.join(XML_LOG_DIR, f"{txn_id}")
+    with open(f"{xml_prefix}_request.xml", "w") as f:
+        f.write(envelope)
+    with open(f"{xml_prefix}_response.xml", "w") as f:
+        f.write(result.get("raw_response", ""))
+
+    submission_record = {
         "timestamp": datetime.now().isoformat(),
         "transaction_id": txn_id,
+        "submission_number": sub_num,
+        "package_reference": _effective_package_ref(),
+        "company_number": current_filing["company_number"],
+        "period_end": current_filing["period_end"],
         "qualifier": result["qualifier"],
         "correlation_id": result.get("correlation_id", ""),
         "errors": result["errors"],
+    }
+    current_filing["last_submission"] = {
+        **submission_record,
+        "request_envelope": envelope,
         "raw_response": result["raw_response"],
     }
+    _save_submission(submission_record)
 
     if result["errors"]:
         for err in result["errors"]:
@@ -251,6 +340,12 @@ def status():
     return render_template("status.html", a=current_filing, submission=submission)
 
 
+@app.route("/submissions")
+def submissions():
+    log = _load_submissions()
+    return render_template("submissions.html", submissions=log)
+
+
 @app.route("/poll", methods=["POST"])
 def poll_submission():
     submission = current_filing.get("last_submission", {})
@@ -261,12 +356,12 @@ def poll_submission():
     status_env = build_status_envelope(
         presenter_id=PRESENTER_ID,
         presenter_auth=PRESENTER_AUTH,
-        submission_number="000001",
+        submission_number=submission.get("submission_number", ""),
         is_test=IS_TEST,
     )
     result = gw_poll(status_env, GW_URL)
 
-    submission["poll_result"] = {
+    poll_result = {
         "timestamp": datetime.now().isoformat(),
         "qualifier": result["qualifier"],
         "status_code": result.get("status_code", ""),
@@ -274,6 +369,11 @@ def poll_submission():
         "errors": result["errors"],
         "raw_response": result["raw_response"],
     }
+    submission["poll_result"] = {
+        **poll_result,
+        "request_envelope": status_env,
+    }
+    _update_last_submission({"poll_result": {k: v for k, v in poll_result.items() if k != "raw_response"}})
 
     # Send acknowledgment
     if result["qualifier"] != "error":

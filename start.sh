@@ -4,6 +4,14 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
+# Load .env if present
+if [ -f "$SCRIPT_DIR/.env" ]; then
+    echo "Loading .env..."
+    set -a
+    . "$SCRIPT_DIR/.env"
+    set +a
+fi
+
 # Port configuration
 API_PORT="${API_PORT:-4825}"
 
