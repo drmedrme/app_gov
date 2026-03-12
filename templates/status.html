@@ -43,11 +43,19 @@
     {% endfor %}
     {% endif %}
     <details>
+        <summary>Raw poll request</summary>
+        <pre>{{ submission.poll_result.get('request_envelope','') }}</pre>
+    </details>
+    <details>
         <summary>Raw poll response</summary>
         <pre>{{ submission.poll_result.get('raw_response','') }}</pre>
     </details>
     {% endif %}
 
+    <details style="margin-top: 15px;">
+        <summary>Raw submission request</summary>
+        <pre>{{ submission.get('request_envelope','') }}</pre>
+    </details>
     <details style="margin-top: 15px;">
         <summary>Raw gateway response</summary>
         <pre>{{ submission.get('raw_response','') }}</pre>

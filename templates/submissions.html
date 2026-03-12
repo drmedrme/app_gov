@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Submission History{% endblock %}
+{% block content %}
+<h1>Submission History</h1>
+
+{% if submissions %}
+<div class="card">
+    <table>
+        <thead>
+            <tr style="border-bottom: 2px solid #003078;">
+                <th>#</th>
+                <th>Timestamp</th>
+                <th>Sub No.</th>
+                <th>Pkg Ref</th>
+                <th>Qualifier</th>
+                <th>Correlation ID</th>
+                <th>Poll Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for s in submissions|reverse %}
+            <tr style="border-bottom: 1px solid #eee;">
+                <td>{{ loop.revindex }}</td>
+                <td style="font-size:0.85em;">{{ s.timestamp[:19] | replace('T', ' ') }}</td>
+                <td><b>{{ s.submission_number }}</b></td>
+                <td>{{ s.package_reference or '-' }}</td>
+                <td>
+                    {% if s.qualifier == 'acknowledgement' %}
+                        <span style="color:#2e7d32; font-weight:bold;">{{ s.qualifier }}</span>
+                    {% elif s.qualifier == 'error' %}
+                        <span style="color:#d32f2f; font-weight:bold;">{{ s.qualifier }}</span>
+                    {% else %}
+                        {{ s.qualifier }}
+                    {% endif %}
+                </td>
+                <td style="font-size:0.8em; font-family:monospace;">{{ s.correlation_id or '-' }}</td>
+                <td>
+                    {% if s.poll_result %}
+                        {% if s.poll_result.status_code == 'ACCEPT' %}
+                            <span style="color:#2e7d32; font-weight:bold;">ACCEPT</span>
+                        {% elif s.poll_result.status_code == 'REJECT' %}
+                            <span style="color:#d32f2f; font-weight:bold;">REJECT</span>
+                        {% elif s.poll_result.status_code %}
+                            {{ s.poll_result.status_code }}
+                        {% else %}
+                            {{ s.poll_result.qualifier }}
+                        {% endif %}
+                    {% else %}
+                        <span style="color:#999;">not polled</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% if s.errors %}
+            <tr style="border-bottom: 1px solid #eee;">
+                <td></td>
+                <td colspan="6" style="color:#d32f2f; font-size:0.85em;">
+                    {% for err in s.errors %}{{ err.text }}{% if not loop.last %}; {% endif %}{% endfor %}
+                </td>
+            </tr>
+            {% endif %}
+            {% if s.poll_result and s.poll_result.rejections %}
+            <tr style="border-bottom: 1px solid #eee;">
+                <td></td>
+                <td colspan="6" style="color:#d32f2f; font-size:0.85em;">
+                    Rejections: {% for r in s.poll_result.rejections %}{{ r.code }}: {{ r.description }}{% if not loop.last %}; {% endif %}{% endfor %}
+                </td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card">
+    <p>No submissions yet.</p>
+</div>
+{% endif %}
+
+<p style="margin-top:15px;"><a href="/status">&larr; Current status</a> | <a href="/">Input form</a></p>
+{% endblock %}

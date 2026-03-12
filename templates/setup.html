@@ -18,6 +18,22 @@
             <td><b>Environment</b></td>
             <td>{% if is_test %}<span style="color:#2e7d32;">TEST</span> (submissions won't be filed for real){% else %}<span style="color:#d32f2f; font-weight:bold;">LIVE</span> (submissions will be filed for real!){% endif %}</td>
         </tr>
+        <tr>
+            <td><b>Package Reference</b></td>
+            <td>
+                {% if package_ref %}
+                <span style="color:#2e7d32; font-weight:bold;">{{ package_ref }}</span>
+                {% elif is_test %}
+                <span style="color:#2e7d32; font-weight:bold;">{{ effective_package_ref }}</span> <span style="color:#666;">(Companies House test default)</span>
+                {% else %}
+                <span style="color:#d32f2f; font-weight:bold;">Not set</span> — set <code>CH_PACKAGE_REF</code> for live submissions
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td><b>Next Submission #</b></td>
+            <td><span style="color:#2e7d32;">{{ next_submission_number }}</span></td>
+        </tr>
     </table>
 </div>
 
@@ -54,10 +70,12 @@
     <h2>Step 2: Test Your Filing</h2>
     <p>Once you have test credentials:</p>
     <ol style="margin: 10px 0 10px 20px; line-height: 2;">
-        <li>Start the app with your test credentials:
-            <pre style="margin:5px 0;">export CH_PRESENTER_ID="your_test_id"
-export CH_PRESENTER_AUTH="your_test_auth"
-./start.sh</pre>
+        <li>Put your test credentials in <code>.env</code> (auto-loaded by <code>start.sh</code>):
+            <pre style="margin:5px 0;">CH_PRESENTER_ID=your_test_id
+CH_PRESENTER_AUTH=your_test_auth
+CH_ENVIRONMENT=test
+CH_PACKAGE_REF=0012</pre>
+            <p style="font-size:0.9em; color:#666;">Or export them manually before running <code>./start.sh</code></p>
         </li>
         <li>Fill in the form (it's pre-filled with the right numbers)</li>
         <li>Click <b>Validate &amp; Preview</b></li>
@@ -102,6 +120,7 @@ export CH_PRESENTER_AUTH="your_test_auth"
     <pre style="margin:10px 0;">export CH_PRESENTER_ID="your_live_id"
 export CH_PRESENTER_AUTH="your_live_auth"
 export CH_ENVIRONMENT=live
+export CH_PACKAGE_REF="your_live_package_ref"
 ./start.sh</pre>
     <p>Then go through the normal form → preview → submit flow. The filing will be sent to Companies House for real.</p>
 </div>

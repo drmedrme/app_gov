@@ -1,0 +1,598 @@
+[
+  {
+    "timestamp": "2026-03-12T09:28:34.309318",
+    "transaction_id": "5881724deed14a46b9a8a89c8f88126f",
+    "submission_number": "1",
+    "package_reference": "0012",
+    "company_number": "10303807",
+    "period_end": "2026-07-31",
+    "qualifier": "unknown",
+    "correlation_id": "",
+    "errors": []
+  },
+  {
+    "timestamp": "2026-03-12T09:41:39.375786",
+    "transaction_id": "9942D74C23614169BFC4E71672769908",
+    "submission_number": "2",
+    "package_reference": "0012",
+    "company_number": "10303807",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "XML failed schema validation: XML error: Fatal error encountered during schema scan  line 16 column 155",
+        "number": "100"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T09:44:15.034496",
+    "transaction_id": "9E381C3A0DCF4CE7B2C29B66A2EA28BB",
+    "submission_number": "3",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "XML failed schema validation: XML error: Fatal error encountered during schema scan  line 16 column 155",
+        "number": "100"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T09:46:06.434522",
+    "transaction_id": "84645C85CCC645A697BF6344ABAE70E9",
+    "submission_number": "4",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "Authorisation Failure",
+        "number": "502"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T09:48:03.169492",
+    "transaction_id": "B1F59F0480724A959AB2F5EFA49D9FCC",
+    "submission_number": "5",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "Authorisation Failure",
+        "number": "502"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T09:51:29.900532",
+    "transaction_id": "3F7BE1FB75764D4EB6A1589F8F4DC6D2",
+    "submission_number": "6",
+    "package_reference": "0012",
+    "company_number": "10303807",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "Authorisation Failure",
+        "number": "502"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T10:15:36.683793",
+    "transaction_id": "16CA5A83A9F742FBA7DA1806107DE8DE",
+    "submission_number": "7",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "Authorisation Failure",
+        "number": "502"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T10:18:55.166702",
+    "transaction_id": "C97E84130A2746D0873A399B098F6A95",
+    "submission_number": "000008",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "Authorisation Failure",
+        "number": "502"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T10:23:11.999619",
+    "transaction_id": "15C272620CED420CA5C561C622F1681B",
+    "submission_number": "000009",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "Authorisation Failure",
+        "number": "502"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T10:27:24.625730",
+    "transaction_id": "F351B04276204329A33DF1F1590D6B13",
+    "submission_number": "000010",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "Authorisation Failure",
+        "number": "502"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T10:40:32.716233",
+    "transaction_id": "16CE68F22E5C4862AAEC0CB4CCA72B1E",
+    "submission_number": "000011",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "Authorisation Failure",
+        "number": "502"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T12:36:32.593049",
+    "transaction_id": "71D301DAC9FF44C996BF3D115FCC0EAF",
+    "submission_number": "000012",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "Authorisation Failure",
+        "number": "502"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T13:32:23.738973",
+    "transaction_id": "18652E8FFA9E4F1DAE460854550A5C0B",
+    "submission_number": "000013",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "cvc-complex-type.2.4.a: Invalid content was found starting with element '{\"http://www.xbrl.org/2008/inlineXBRL\":header}'. One of '{\"http://www.w3.org/1999/xhtml\":script, \"http://www.w3.org/1999/xhtml\":style, \"http://www.w3.org/1999/xhtml\":meta, \"http://www.w3.org/1999/xhtml\":link, \"http://www.w3.org/1999/xhtml\":object, \"http://www.w3.org/1999/xhtml\":title, \"http://www.w3.org/1999/xhtml\":base}' is expected.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "cvc-complex-type.4: Attribute 'type' must appear on element 'style'.",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T13:34:49.485263",
+    "transaction_id": "94A5DA887F814031B6EC684BB098405B",
+    "submission_number": "000014",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "cvc-complex-type.2.4.a: Invalid content was found starting with element '{\"http://www.xbrl.org/2008/inlineXBRL\":header}'. One of '{\"http://www.w3.org/1999/xhtml\":script, \"http://www.w3.org/1999/xhtml\":style, \"http://www.w3.org/1999/xhtml\":meta, \"http://www.w3.org/1999/xhtml\":link, \"http://www.w3.org/1999/xhtml\":object, \"http://www.w3.org/1999/xhtml\":base}' is expected.",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T13:36:17.077322",
+    "transaction_id": "2BD0BE42C9EF4D08835FFB3A365E2B0A",
+    "submission_number": "000015",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "cvc-complex-type.2.4.a: Invalid content was found starting with element '{\"http://www.xbrl.org/2008/inlineXBRL\":header}'. One of '{\"http://www.w3.org/1999/xhtml\":script, \"http://www.w3.org/1999/xhtml\":style, \"http://www.w3.org/1999/xhtml\":meta, \"http://www.w3.org/1999/xhtml\":link, \"http://www.w3.org/1999/xhtml\":object, \"http://www.w3.org/1999/xhtml\":base}' is expected.",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T13:38:13.124039",
+    "transaction_id": "EFED0B64CFBB405FA58027ED7BC76444",
+    "submission_number": "000016",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "The transformation registry with namespace 'http://www.xbrl.org/inlineXBRL/transformation/2010-04-20' does not include the transform function 'numdotdecimal'.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "cvc-complex-type.2.2: Element 'uk-bus:AccountingStandardsApplied' must have no element [children], and the value must be valid.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "cvc-complex-type.2.2: Element 'uk-bus:AccountsStatusAuditedOrUnaudited' must have no element [children], and the value must be valid.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "cvc-complex-type.2.4.a: Invalid content was found starting with element '{\"http://xbrl.frc.org.uk/cd/2024-01-01/business\":LegalFormOfEntity}'. One of '{\"http://www.xbrl.org/2003/instance\":item, \"http://www.xbrl.org/2003/instance\":tuple, \"http://www.xbrl.org/2003/instance\":context, \"http://www.xbrl.org/2003/instance\":unit, \"http://www.xbrl.org/2003/linkbase\":footnoteLink}' is expected.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "cvc-length-valid: Value 'Micro-entities' with length = '14' is not facet-valid with respect to length '0' for type '#AnonType_fixedItemType'.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "cvc-length-valid: Value 'Unaudited' with length = '9' is not facet-valid with respect to length '0' for type '#AnonType_fixedItemType'.",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T13:42:24.606892",
+    "transaction_id": "C67017BE86DD4FE3960C02661A5024E1",
+    "submission_number": "000017",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "The input '(20,193)' on the element 'uk-core:Creditors-AmountsFallingDueAfterMoreThanOneYear' is not schema-valid against the type 'numdotdecimalType'.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "The input '-' on the element 'uk-core:CurrentAssets' is not schema-valid against the type 'numdotdecimalType'.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "cvc-complex-type.2.4.a: Invalid content was found starting with element '{\"http://xbrl.frc.org.uk/cd/2024-01-01/business\":LegalFormOfEntity}'. One of '{\"http://www.xbrl.org/2003/instance\":item, \"http://www.xbrl.org/2003/instance\":tuple, \"http://www.xbrl.org/2003/instance\":context, \"http://www.xbrl.org/2003/instance\":unit, \"http://www.xbrl.org/2003/linkbase\":footnoteLink}' is expected.",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T13:44:16.851153",
+    "transaction_id": "E709FDF49A1340A484A86AF8206D6319",
+    "submission_number": "000018",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "cvc-complex-type.2.4.a: Invalid content was found starting with element '{\"http://xbrl.frc.org.uk/cd/2024-01-01/business\":DateApprovalAccounts}'. One of '{\"http://www.xbrl.org/2003/instance\":item, \"http://www.xbrl.org/2003/instance\":tuple, \"http://www.xbrl.org/2003/instance\":context, \"http://www.xbrl.org/2003/instance\":unit, \"http://www.xbrl.org/2003/linkbase\":footnoteLink}' is expected.",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T13:45:41.279332",
+    "transaction_id": "6AEA0061EF0A4A1BAAB5570BF79AFF48",
+    "submission_number": "000019",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "cvc-complex-type.2.4.a: Invalid content was found starting with element '{\"http://xbrl.frc.org.uk/fr/2024-01-01/core\":Creditors-AmountsFallingDueAfterMoreThanOneYear}'. One of '{\"http://www.xbrl.org/2003/instance\":item, \"http://www.xbrl.org/2003/instance\":tuple, \"http://www.xbrl.org/2003/instance\":context, \"http://www.xbrl.org/2003/instance\":unit, \"http://www.xbrl.org/2003/linkbase\":footnoteLink}' is expected.",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T13:49:50.877950",
+    "transaction_id": "DBEB415E9ECC4C638F0DA56B06A278CE",
+    "submission_number": "000020",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "cvc-complex-type.2.4.a: Invalid content was found starting with element '{\"http://xbrl.frc.org.uk/cd/2024-01-01/business\":AverageNumberEmployeesDuringPeriod}'. One of '{\"http://www.xbrl.org/2003/instance\":item, \"http://www.xbrl.org/2003/instance\":tuple, \"http://www.xbrl.org/2003/instance\":context, \"http://www.xbrl.org/2003/instance\":unit, \"http://www.xbrl.org/2003/linkbase\":footnoteLink}' is expected.",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T13:52:19.595303",
+    "transaction_id": "F052E195A59D43F68ECA4CA2C8DC42CA",
+    "submission_number": "000021",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "Item '{http://xbrl.frc.org.uk/cd/2024-01-01/business}BalanceSheetDate' requires an instant but its context contains a duration.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "Item '{http://xbrl.frc.org.uk/cd/2024-01-01/business}EndDateForPeriodCoveredByReport' requires an instant but its context contains a duration.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "Item '{http://xbrl.frc.org.uk/cd/2024-01-01/business}StartDateForPeriodCoveredByReport' requires an instant but its context contains a duration.",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T13:53:24.779057",
+    "transaction_id": "A9849B3A88E24DD0AB28378D67A2110A",
+    "submission_number": "000022",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "The item '{http://xbrl.frc.org.uk/cd/2024-01-01/business}AccountingStandardsApplied' is not dimensionally valid.\nThe hypercube '{http://xbrl.frc.org.uk/cd/2024-01-01/business}AccountingStandardsAppliedHypercube' in role 'http://xbrl.frc.org.uk/cd/roles/Hypercube-AccountingStandardsApplied' requires dimension '{http://xbrl.frc.org.uk/cd/2024-01-01/business}AccountingStandardsDimension' but it is not reported.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "The item '{http://xbrl.frc.org.uk/cd/2024-01-01/business}AccountsStatusAuditedOrUnaudited' is not dimensionally valid.\nThe hypercube '{http://xbrl.frc.org.uk/cd/2024-01-01/business}AccountsStatusHypercube' in role 'http://xbrl.frc.org.uk/cd/roles/Hypercube-AccountsStatus' requires dimension '{http://xbrl.frc.org.uk/cd/2024-01-01/business}AccountsStatusDimension' but it is not reported.",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T13:54:47.785974",
+    "transaction_id": "F9F8438748F3406EBE8511DACA3C6D98",
+    "submission_number": "000023",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2026-07-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "AccountingStandardsApplied must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "AccountsStatusAuditedOrUnaudited must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "AccountsType must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "DateAuthorisationFinancialStatementsForIssue must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "DirectorSigningFinancialStatements must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "EntityDormantTruefalse must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "EntityTradingStatus must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "StatementThatAccountsHaveBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime - element must be provided for the current accounting period",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "StatementThatCompanyEntitledToExemptionFromAuditUnderSection477CompaniesAct2006RelatingToSmallCompanies - element must be provided for the current accounting period",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "StatementThatDirectorsAcknowledgeTheirResponsibilitiesUnderCompaniesAct - element must be provided for the current accounting period",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "StatementThatMembersHaveNotRequiredCompanyToObtainAnAudit - element must be provided for the current accounting period",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T13:57:20.608500",
+    "transaction_id": "DB67C498B07A4BCBA7B5509A2C5A2D16",
+    "submission_number": "000024",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2025-12-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "AccountingStandardsApplied must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "AccountsStatusAuditedOrUnaudited must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "AccountsType must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "DateAuthorisationFinancialStatementsForIssue must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "DirectorSigningFinancialStatements must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "EntityDormantTruefalse must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "EntityTradingStatus must be provided for the current accounting period.",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "StatementThatAccountsHaveBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime - element must be provided for the current accounting period",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "StatementThatCompanyEntitledToExemptionFromAuditUnderSection477CompaniesAct2006RelatingToSmallCompanies - element must be provided for the current accounting period",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "StatementThatDirectorsAcknowledgeTheirResponsibilitiesUnderCompaniesAct - element must be provided for the current accounting period",
+        "number": "9999"
+      },
+      {
+        "type": "fatal",
+        "text": "StatementThatMembersHaveNotRequiredCompanyToObtainAnAudit - element must be provided for the current accounting period",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T14:39:01.139329",
+    "transaction_id": "2AB24754C201487B80E016EE97DCD228",
+    "submission_number": "000025",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2025-12-31",
+    "qualifier": "error",
+    "correlation_id": "",
+    "errors": [
+      {
+        "type": "fatal",
+        "text": "The explicit member for dimension '{http://xbrl.frc.org.uk/cd/2024-01-01/business}EntityTradingStatusDimension' has the default, '{http://xbrl.frc.org.uk/cd/2024-01-01/business}EntityTradingDefault', as its value.",
+        "number": "9999"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-12T14:41:24.013164",
+    "transaction_id": "6647BC00879D4E47BFDB93E038C7A8D7",
+    "submission_number": "000026",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2025-12-31",
+    "qualifier": "response",
+    "correlation_id": "",
+    "errors": []
+  },
+  {
+    "timestamp": "2026-03-12T15:17:51.775381",
+    "transaction_id": "BD6B743C51C1459BB5610B1940E70849",
+    "submission_number": "000027",
+    "package_reference": "0012",
+    "company_number": "10300000",
+    "period_end": "2025-12-31",
+    "qualifier": "response",
+    "correlation_id": "",
+    "errors": []
+  }
+]
